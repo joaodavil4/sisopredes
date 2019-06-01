@@ -3,14 +3,19 @@
 // (powered by Fernflower decompiler)
 //
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import Model.Channel;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 class TCPServer {
+    private static BufferedReader inFromClient;
+    private static DataOutputStream outToClient;
+    private List<Channel> channels;
+
     TCPServer() {
     }
 
@@ -19,8 +24,8 @@ class TCPServer {
 
         while(true) {
             Socket connectionSocket = welcomeSocket.accept();
-            BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+            inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+            outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             String clientSentence = inFromClient.readLine();
             InetAddress IPAddress = connectionSocket.getInetAddress();
             int port = connectionSocket.getPort();
@@ -30,4 +35,19 @@ class TCPServer {
             connectionSocket.close();
         }
     }
+
+    private static Runnable t1ReadFromClient = new Runnable() {
+        public void run() {
+
+                try {
+                    String clientSentence = inFromClient.readLine();
+                    String echo = clientSentence + '\n';
+                    outToClient.writeBytes(echo);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+
+        }
+    };
 }
