@@ -9,6 +9,11 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 class TCPClient {
+
+    private String nickname;
+    private String channel;
+
+
     TCPClient() {
     }
 
@@ -17,7 +22,7 @@ class TCPClient {
         Socket clientSocket = new Socket("127.0.0.1", 6790);
         DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        System.out.print("Digite uma menssagem: ");
+        System.out.print("Digite uma mensagem: ");
         String sentence = inFromUser.readLine();
         outToServer.writeBytes(sentence + '\n');
         String echo = inFromServer.readLine();
