@@ -14,6 +14,7 @@ import java.net.Socket;
 class TCPClient {
     private static BufferedReader inFromServer;
     private static Boolean statusClient;
+    private static  User usr;
 
 
 
@@ -32,7 +33,7 @@ class TCPClient {
         System.out.println("Escolha o canal desejado");
         String channel = inFromUser.readLine();
 
-        User usr = new User(name, channel);
+        usr = new User(name, channel);
         String msg = "";
 
         t1ReadFromServer.run();
@@ -92,7 +93,9 @@ class TCPClient {
         public void run() {
             do {
                 try {
-                    System.out.println(inFromServer.readLine());
+                    if(inFromServer.readLine() == "20"){
+                        usr.setNick("");
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
