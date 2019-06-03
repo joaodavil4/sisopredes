@@ -14,7 +14,7 @@ import java.net.Socket;
 class TCPClient {
     private static BufferedReader inFromServer;
     private static Boolean statusClient;
-    private static  User usr;
+    private static User usr;
 
 
 
@@ -41,17 +41,14 @@ class TCPClient {
         do {
             System.out.print("Digite uma mensagem: ");
             msg = inFromUser.readLine();
+            outToServer.writeBytes(msg);
 
             if (!msg.startsWith("/")) {
-                outToServer.writeBytes("<" + usr.getNick() + "> " + msg + '\n');
+//            outToServer.writeBytes("<" + usr.getNick() + "> " + msg + '\n');
 //            String echo = inFromServer.readLine();
 //            System.out.println("FROM SERVER: " + echo);
-
-
             }
             else if (msg.startsWith("/nick")) {
-                outToServer.writeBytes("/nick" + msg);
-
                 //AJEITAR CONFORME A THREAD
                 if (inFromServer.readLine() == "20") {
                     usr.setNick("");
@@ -62,8 +59,20 @@ class TCPClient {
                 }
 
             } else if (msg.startsWith("/create")) {
+                if (inFromUser.readLine() == "20"){
+                    System.out.println("Canal criado");
+                }
+                else {
+                    System.out.println("Não foi possível criar o canal.");
+                }
 
             } else if (msg.startsWith("/remove")) {
+                if (inFromUser.readLine() == "20"){
+                    System.out.println("Can");
+                }
+                else {
+                    System.out.println("Não foi possível criar o canal.");
+                }
 
             } else if (msg.startsWith("/list")) {
 

@@ -26,13 +26,14 @@ class TCPServer {
         Socket connectionSocket = welcomeSocket.accept();
         inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
         outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-        String clientSentence = inFromClient.readLine();
-        InetAddress IPAddress = connectionSocket.getInetAddress();
-        int port = connectionSocket.getPort();
+
 
         while(statusServer) {
             t1ReadFromClient.run();
 
+            String clientSentence = inFromClient.readLine();
+            InetAddress IPAddress = connectionSocket.getInetAddress();
+            int port = connectionSocket.getPort();
             System.out.println(IPAddress.getHostAddress() + ":" + port + " => " + clientSentence);
             String echo = clientSentence + '\n';
             outToClient.writeBytes(echo);
