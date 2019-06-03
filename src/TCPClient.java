@@ -22,11 +22,8 @@ class TCPClient {
     }
 
     public static void main(String[] argv) throws Exception {
-        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-        Socket clientSocket = new Socket("127.0.0.1", 6790);
-        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-        inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         //CONFIGURAÇÃO INICIAL USUÁRIO
         System.out.println("Digite o seu nick");
         String name = inFromUser.readLine();
@@ -36,12 +33,21 @@ class TCPClient {
         usr = new User(name, channel);
         String msg = "";
 
-        t1ReadFromServer.run();
+
 
         do {
-            System.out.print("Digite uma mensagem: ");
-            msg = inFromUser.readLine();
-            outToServer.writeBytes(msg);
+            try {
+                Socket clientSocket = new Socket("127.0.0.1", 6790);
+                DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+                inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                System.out.println("Digite uma mensagem: ");
+                msg = inFromUser.readLine();
+                outToServer.writeBytes(msg);
+            }
+            catch (Exception e){
+
+
+            }
 
             if (!msg.startsWith("/")) {
 //            outToServer.writeBytes("<" + usr.getNick() + "> " + msg + '\n');
@@ -88,10 +94,12 @@ class TCPClient {
 
             } else if (msg.startsWith("/quit")) {
 
-                clientSocket.close();
+//                clientSocket.close();
             }
         }
         while (!msg.startsWith("/quit"));
+
+
 
 
 
