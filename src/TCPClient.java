@@ -22,6 +22,7 @@ class TCPClient {
     }
 
     public static void main(String[] argv) throws Exception {
+        statusClient = true;
 
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         //CONFIGURAÇÃO INICIAL USUÁRIO
@@ -35,14 +36,19 @@ class TCPClient {
 
 
 
+
+
+
+
         do {
             try {
                 Socket clientSocket = new Socket("127.0.0.1", 6790);
                 DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-                inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 System.out.println("Digite uma mensagem: ");
                 msg = inFromUser.readLine();
                 outToServer.writeBytes(msg);
+                outToServer.flush();
+                clientSocket.close();
             }
             catch (Exception e){
 
@@ -81,6 +87,7 @@ class TCPClient {
                 }
 
             } else if (msg.startsWith("/list")) {
+                t1ReadFromServer.run();
 
             } else if (msg.startsWith("/join")) {
 
@@ -96,6 +103,7 @@ class TCPClient {
 
 //                clientSocket.close();
             }
+
         }
         while (!msg.startsWith("/quit"));
 
@@ -110,6 +118,9 @@ class TCPClient {
         public void run() {
             do {
                 try {
+                    Socket clientSocket = new Socket("127.0.0.1", 6790);
+                    inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+//                    System.out.println(inFromServer.readLine());
                     if(inFromServer.readLine() == "20"){
                         usr.setNick("");
                     }

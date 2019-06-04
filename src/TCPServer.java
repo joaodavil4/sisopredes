@@ -27,14 +27,8 @@ class TCPServer {
 
     public static void main(String[] argv) throws Exception {
 
-
         t1ReadFromClient.run();
 
-        while(statusServer) {
-
-
-
-        }
 
     }
 
@@ -51,6 +45,9 @@ class TCPServer {
                     int port = connectionSocket.getPort();
                     System.out.println(IPAddress.getHostAddress() + ":" + port + " => " + clientSentence);
                     String echo = clientSentence + '\n';
+                    outToClient.writeBytes("kk");
+                    outToClient.flush();
+                    welcomeSocket.close();
 
                     if (clientSentence.startsWith("/nick")) {
 //                        for (Channel c : channels) {
@@ -106,7 +103,6 @@ class TCPServer {
 
 
                     }
-                    outToClient.writeBytes(echo);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
