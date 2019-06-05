@@ -72,7 +72,17 @@ class TCPServer {
 //                        }
             return "20";
 
-        } else if (clientSentence.startsWith("/create")) {
+        }
+        else if (clientSentence.startsWith("/start")){
+            String[] ms = clientSentence.split("/", 3);
+
+            //*****start/nickame/canal
+            //PRECISA VERIFICAR SE JA TEM UM USUARIO COM AQUELE NOME
+            channels.get(ms[2]).addParticipante(ms[1]);
+            return "20";
+
+        }
+        else if (clientSentence.startsWith("/create")) {
             String ms = clientSentence.substring(7);
             Channel channel = new Channel(ms, "connectionSocket.getInetAddress()");
             channels.put(ms, channel);

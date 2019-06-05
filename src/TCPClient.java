@@ -38,7 +38,7 @@ class TCPClient {
 
         System.out.println("Digite o seu nick");
         String nick = inFromUser.readLine();
-        User user = new User(nick);
+
 
         System.out.println("Conectando ao servidor " + servidor + ":" + porta);
         clientSocket = new Socket(servidor, porta);
@@ -48,9 +48,12 @@ class TCPClient {
         System.out.println("Escolha um canal acima ^");
         outToServer.writeBytes(sentence + '\n');
         System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
-        sentence = "/join " +inFromUser.readLine();
-        outToServer.writeBytes(sentence + '\n');
+        String channel = inFromUser.readLine();
+        outToServer.writeBytes("/join " + sentence + '\n');
         System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
+
+        User user = new User(nick, channel);
+        outToServer.writeBytes("/start/ " + user.getNick() + "/" + user.getChannel() + '\n');
 
 
 
@@ -74,6 +77,16 @@ class TCPClient {
 //            outToServer.writeBytes("<" + usr.getNick() + "> " + msg + '\n');
 //            String echo = inFromServer.readLine();
 //            System.out.println("FROM SERVER: " + echo);
+        }
+        //COMANDO INICIAL PARA SETAR O USUARIO NO SERVER
+        else if (msgUser.startsWith("/start")){
+            if (msgServer == "20") {
+                return "Conectado ao canal!";
+            }
+            else {
+                return "Nickname já cadastrado.";
+            }
+
         }
         else if (msgUser.startsWith("/nick")) {
             //AJEITAR CONFORME A THREAD

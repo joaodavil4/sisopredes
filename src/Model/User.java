@@ -3,11 +3,12 @@ package Model;
 public class User {
 
     private String nick;
-    private String channel;
+    private String channel; //chave
     private String[] listMsgs;
 
-    public User(String nick){
+    public User(String nick, String channel){
         this.nick = nick;
+        this.channel = channel;
     }
 
     public String getNick() {
