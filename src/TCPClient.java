@@ -9,11 +9,13 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 class TCPClient {
     private static BufferedReader inFromServer;
     private static Boolean statusClient;
+    private static Socket clientSocket;
     private static User usr;
 
 
@@ -21,6 +23,44 @@ class TCPClient {
     TCPClient() {
     }
 
+    public static void main(String[] argv) throws Exception {
+        String sentence;
+        String modifiedSentence;
+
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+
+        int porta = 6789;
+        String servidor = "localhost";
+
+        System.out.println("Conectando ao servidor " + servidor + ":" + porta);
+
+        while (true) {
+
+
+            Socket clientSocket = new Socket(servidor, porta);
+
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+
+            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            System.out.println("Digite string a ser enviada para o servidor");
+            sentence = inFromUser.readLine();
+
+            outToServer.writeBytes(sentence + '\n');
+
+            modifiedSentence = inFromServer.readLine();
+
+            System.out.println("Recebido do servidor: " + modifiedSentence);
+        }
+
+//        clientSocket.close();
+    }
+
+
+
+    }
+
+    /*
     public static void main(String[] argv) throws Exception {
         statusClient = true;
 
@@ -34,6 +74,7 @@ class TCPClient {
         usr = new User(name, channel);
         String msg = "";
 
+        clientSocket = new Socket("127.0.0.1", 6789);
 
 
 
@@ -42,13 +83,15 @@ class TCPClient {
 
         do {
             try {
-                Socket clientSocket = new Socket("127.0.0.1", 6790);
+
                 DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+                inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 System.out.println("Digite uma mensagem: ");
                 msg = inFromUser.readLine();
                 outToServer.writeBytes(msg);
+                System.out.println(inFromUser.readLine());
                 outToServer.flush();
-                clientSocket.close();
+
             }
             catch (Exception e){
 
@@ -107,8 +150,7 @@ class TCPClient {
         }
         while (!msg.startsWith("/quit"));
 
-
-
+        clientSocket.close();
 
 
     }
@@ -118,8 +160,9 @@ class TCPClient {
         public void run() {
             do {
                 try {
-                    Socket clientSocket = new Socket("127.0.0.1", 6790);
+
                     inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    System.out.println("aqui");
 //                    System.out.println(inFromServer.readLine());
                     if(inFromServer.readLine() == "20"){
                         usr.setNick("");
@@ -130,6 +173,11 @@ class TCPClient {
             }while (!statusClient);
 
 
+
+
         }
     };
-}
+    */
+
+
+

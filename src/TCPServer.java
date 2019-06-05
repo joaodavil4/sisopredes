@@ -17,6 +17,9 @@ import java.util.Map;
 class TCPServer {
     private static BufferedReader inFromClient;
     private static DataOutputStream outToClient;
+    private static Socket connectionSocket;
+    private static ServerSocket welcomeSocket;
+    private static String clientSentence;
     private static Map<String, Channel> channels;
     private static List<String> keysChannels;
 
@@ -24,11 +27,37 @@ class TCPServer {
 
     TCPServer() {
     }
-
     public static void main(String[] argv) throws Exception {
+        String clientSentence;
+        String capitalizedSentence;
+        ServerSocket welcomeSocket = new ServerSocket(6789);
 
-        t1ReadFromClient.run();
+        System.out.println("ponto1");
 
+
+        while (true) {
+            try {
+                Socket connectionSocket = welcomeSocket.accept();
+                System.out.println("ponto2");
+                BufferedReader inFromClient = new BufferedReader(
+                        new InputStreamReader(
+                                connectionSocket.getInputStream()
+                        )
+                );
+                DataOutputStream outToClient = new DataOutputStream(
+                        connectionSocket.getOutputStream()
+                );
+                System.out.println("ponto3");
+                clientSentence = inFromClient.readLine();
+                System.out.println("ponto4");
+                capitalizedSentence = clientSentence.toUpperCase() + '\n';
+                outToClient.writeBytes(capitalizedSentence);
+                // connectionSocket.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -36,19 +65,6 @@ class TCPServer {
         public void run() {
             do {
                 try {
-                    ServerSocket welcomeSocket = new ServerSocket(6790);
-                    Socket connectionSocket = welcomeSocket.accept();
-                    inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-                    outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-                    String clientSentence = inFromClient.readLine();
-                    InetAddress IPAddress = connectionSocket.getInetAddress();
-                    int port = connectionSocket.getPort();
-                    System.out.println(IPAddress.getHostAddress() + ":" + port + " => " + clientSentence);
-                    String echo = clientSentence + '\n';
-                    outToClient.writeBytes("kk");
-                    outToClient.flush();
-                    welcomeSocket.close();
-
                     if (clientSentence.startsWith("/nick")) {
 //                        for (Channel c : channels) {
 //                            User usr = (User) c.getParticipantes();
@@ -108,7 +124,46 @@ class TCPServer {
                 }
 
             }while (statusServer);
+            try {
+                welcomeSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
     };
+
+ /*   public static void main (String args[]) throws Exception{
+        String sentence;
+        String modifiedSentence;
+
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(
+                System.in));
+
+        int porta = 6789;
+        String servidor = "localhost";
+
+        System.out.println("Conectando ao servidor " + servidor + ":" + porta);
+
+        Socket clientSocket = new Socket(servidor, porta);
+
+        DataOutputStream outToServer = new DataOutputStream(clientSocket
+                .getOutputStream());
+
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(
+                clientSocket.getInputStream()));
+
+        System.out.println("Digite string a ser enviada para o servidor");
+        sentence = inFromUser.readLine();
+
+        outToServer.writeBytes(sentence + '\n');
+
+        modifiedSentence = inFromServer.readLine();
+
+        System.out.println("Recebido do servidor: " + modifiedSentence);
+
+        clientSocket.close();
+    }
+*/
+
 }
