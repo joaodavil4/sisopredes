@@ -35,149 +35,74 @@ class TCPClient {
         System.out.println("Conectando ao servidor " + servidor + ":" + porta);
 
         while (true) {
-
-
             Socket clientSocket = new Socket(servidor, porta);
-
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
             System.out.println("Digite string a ser enviada para o servidor");
             sentence = inFromUser.readLine();
-
             outToServer.writeBytes(sentence + '\n');
-
             modifiedSentence = inFromServer.readLine();
-
-            System.out.println("Recebido do servidor: " + modifiedSentence);
+            System.out.println("Recebido do servidor: " + processaMsgServer(sentence, modifiedSentence));
         }
-
 //        clientSocket.close();
     }
 
+    public static String processaMsgServer(String msgUser, String msgServer){
 
 
-    }
-
-    /*
-    public static void main(String[] argv) throws Exception {
-        statusClient = true;
-
-        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-        //CONFIGURAÇÃO INICIAL USUÁRIO
-        System.out.println("Digite o seu nick");
-        String name = inFromUser.readLine();
-        System.out.println("Escolha o canal desejado");
-        String channel = inFromUser.readLine();
-
-        usr = new User(name, channel);
-        String msg = "";
-
-        clientSocket = new Socket("127.0.0.1", 6789);
-
-
-
-
-
-
-        do {
-            try {
-
-                DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-                inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                System.out.println("Digite uma mensagem: ");
-                msg = inFromUser.readLine();
-                outToServer.writeBytes(msg);
-                System.out.println(inFromUser.readLine());
-                outToServer.flush();
-
-            }
-            catch (Exception e){
-
-
-            }
-
-            if (!msg.startsWith("/")) {
+        if (!msgUser.startsWith("/")) {
 //            outToServer.writeBytes("<" + usr.getNick() + "> " + msg + '\n');
 //            String echo = inFromServer.readLine();
 //            System.out.println("FROM SERVER: " + echo);
+        }
+        else if (msgUser.startsWith("/nick")) {
+            //AJEITAR CONFORME A THREAD
+            if (msgServer == "20") {
+                usr.setNick("");
+                return "Nickname alterado!";
             }
-            else if (msg.startsWith("/nick")) {
-                //AJEITAR CONFORME A THREAD
-                if (inFromServer.readLine() == "20") {
-                    usr.setNick("");
-                    System.out.println("Nickname alterado!");
-                }
-                else {
-                    System.out.println("Nickname já existente.");
-                }
+            else {
+                return "Nickname já existente";
+            }
 
-            } else if (msg.startsWith("/create")) {
-                if (inFromUser.readLine() == "20"){
-                    System.out.println("Canal criado");
-                }
-                else {
-                    System.out.println("Não foi possível criar o canal.");
-                }
+        } else if (msgUser.startsWith("/create")) {
+            if (msgServer == "20"){
+                return "Canal criado";
+            }
+            else {
+                return "Não foi possível criar o canal.";
+            }
 
-            } else if (msg.startsWith("/remove")) {
-                if (inFromUser.readLine() == "20"){
-                    System.out.println("Can");
-                }
-                else {
-                    System.out.println("Não foi possível criar o canal.");
-                }
+        } else if (msgUser.startsWith("/remove")) {
+            if (msgServer == "20"){
+                return "Can";
+            }
+            else {
+                return "Não foi possível criar o canal.";
+            }
 
-            } else if (msg.startsWith("/list")) {
-                t1ReadFromServer.run();
+        } else if (msgUser.startsWith("/list")) {
 
-            } else if (msg.startsWith("/join")) {
 
-            } else if (msg.startsWith("/part")) {
+        } else if (msgUser.startsWith("/join")) {
 
-            } else if (msg.startsWith("/names")) {
+        } else if (msgUser.startsWith("/part")) {
 
-            } else if (msg.startsWith("/kick")) {
+        } else if (msgUser.startsWith("/names")) {
 
-            } else if (msg.startsWith(("msg"))) {
+        } else if (msgUser.startsWith("/kick")) {
 
-            } else if (msg.startsWith("/quit")) {
+        } else if (msgUser.startsWith(("msg"))) {
+
+        } else if (msgUser.startsWith("/quit")) {
 
 //                clientSocket.close();
-            }
-
         }
-        while (!msg.startsWith("/quit"));
-
-        clientSocket.close();
 
 
+        return "k";
     }
 
-    //THREAD PRA LER AS MSGS DO SERVIDOR
-    private static Runnable t1ReadFromServer = new Runnable() {
-        public void run() {
-            do {
-                try {
 
-                    inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    System.out.println("aqui");
-//                    System.out.println(inFromServer.readLine());
-                    if(inFromServer.readLine() == "20"){
-                        usr.setNick("");
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }while (!statusClient);
-
-
-
-
-        }
-    };
-    */
-
-
+}
 
