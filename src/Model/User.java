@@ -6,9 +6,8 @@ public class User {
     private String channel;
     private String[] listMsgs;
 
-    public User(String nick, String channel){
+    public User(String nick){
         this.nick = nick;
-        this.channel = channel;
     }
 
     public String getNick() {

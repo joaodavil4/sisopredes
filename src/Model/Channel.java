@@ -3,7 +3,7 @@ package Model;
 import java.util.List;
 
 public class Channel {
-    private List<User> participantes;
+    private List<String> participantes;
     private String nome;
     private String admin;
 
@@ -12,11 +12,11 @@ public class Channel {
         this.admin = admin;
     }
 
-    public List<User> getParticipantes(){
+    public List<String> getParticipantes(){
         return participantes;
     }
 
-    public void addParticipante(User user){
+    public void addParticipante(String user){
         participantes.add(user);
     }
 

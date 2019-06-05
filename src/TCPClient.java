@@ -25,24 +25,44 @@ class TCPClient {
 
     public static void main(String[] argv) throws Exception {
         String sentence;
-        String modifiedSentence;
+        Socket clientSocket;
+        String sentenceFromServer;
+        DataOutputStream outToServer;
 
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+
+
 
         int porta = 6789;
         String servidor = "localhost";
 
+        System.out.println("Digite o seu nick");
+        String nick = inFromUser.readLine();
+        User user = new User(nick);
+
         System.out.println("Conectando ao servidor " + servidor + ":" + porta);
+        clientSocket = new Socket(servidor, porta);
+        outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        sentence = "/list";
+        System.out.println("Escolha um canal acima ^");
+        outToServer.writeBytes(sentence + '\n');
+        System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
+        sentence = "/join " +inFromUser.readLine();
+        outToServer.writeBytes(sentence + '\n');
+        System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
+
+
 
         while (true) {
-            Socket clientSocket = new Socket(servidor, porta);
-            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            clientSocket = new Socket(servidor, porta);
+            outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             System.out.println("Digite string a ser enviada para o servidor");
             sentence = inFromUser.readLine();
             outToServer.writeBytes(sentence + '\n');
-            modifiedSentence = inFromServer.readLine();
-            System.out.println("Recebido do servidor: " + processaMsgServer(sentence, modifiedSentence));
+            sentenceFromServer = inFromServer.readLine();
+            System.out.println("Recebido do servidor: " + processaMsgServer(sentence, sentenceFromServer));
         }
 //        clientSocket.close();
     }
@@ -82,9 +102,16 @@ class TCPClient {
             }
 
         } else if (msgUser.startsWith("/list")) {
+            return msgServer;
 
 
         } else if (msgUser.startsWith("/join")) {
+            if (msgServer == "20"){
+                return "Entrou no canal";
+            }
+            else {
+                return "Não foi possível entrar no canal.";
+            }
 
         } else if (msgUser.startsWith("/part")) {
 

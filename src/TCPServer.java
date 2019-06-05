@@ -10,9 +10,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class TCPServer {
     private static BufferedReader inFromClient;
@@ -30,8 +28,15 @@ class TCPServer {
 
     public static void main(String[] argv) throws Exception {
         String clientSentence;
-        String capitalizedSentence;
+        String stringToSend;
         ServerSocket welcomeSocket = new ServerSocket(6789);
+
+        channels = new HashMap<>();
+
+        Channel ch = new Channel ("lol", "kk");
+        Channel ch2 = new Channel ("brizadero", "kk");
+        channels.put("KK", ch);
+        channels.put("briz", ch2);
 
         System.out.println("ponto1");
 
@@ -45,8 +50,8 @@ class TCPServer {
                 System.out.println("ponto3");
                 clientSentence = inFromClient.readLine();
                 System.out.println("ponto4");
-                outToClient.writeBytes(processaMsg(clientSentence));
-                System.out.println("Enviou msg");
+                stringToSend = processaMsg(clientSentence) + '\n';
+                outToClient.writeBytes(stringToSend);
                 // connectionSocket.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -85,16 +90,24 @@ class TCPServer {
 
         } else if (clientSentence.startsWith("/list")) {
             String list = "";
-//                        for (Channel c: channels ) {
-//                            list += c.getNome() + "\n";
-//                        }
+            Set<String> keys = channels.keySet();
+                for (String key: keys ) {
+                    if (key != null){
+                        list += channels.get(key).getNome() + "\n";
+                    }
+                }
             return list;
 
         } else if (clientSentence.startsWith("/join")) {
-            String ch = clientSentence.substring(6);
-
-            //TROCAR OS CANAIS PRA HASHMAP PRA PODER ACESSAR PELA CHAVE
-//                        channels.get()
+            String ch = clientSentence.substring(7);
+                if (channels.containsKey(ch)) {
+                    Channel channel = channels.get(ch);
+                    channel.addParticipante("lol");
+                    return "20";
+                }
+                else {
+                    return "10";
+                }
 
         } else if (clientSentence.startsWith("/part")) {
 
@@ -111,8 +124,5 @@ class TCPServer {
         }
         return "ok";
     }
-
-
-
 
 }
