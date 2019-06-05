@@ -19,6 +19,7 @@ class TCPServer {
     private static ServerSocket welcomeSocket;
     private static String clientSentence;
     private static Map<String, Channel> channels;
+    private static Map<String , String> ips;
     private static List<String> keysChannels;
 
     private static boolean statusServer;
@@ -30,6 +31,8 @@ class TCPServer {
         String clientSentence;
         String stringToSend;
         ServerSocket welcomeSocket = new ServerSocket(6789);
+
+        ips = new HashMap<>();
 
         channels = new HashMap<>();
 
@@ -74,11 +77,13 @@ class TCPServer {
 
         }
         else if (clientSentence.startsWith("/start")){
-            String[] ms = clientSentence.split("/", 3);
+            String[] ms = clientSentence.split("/", 5);
 
-            //*****start/nickame/canal
+            //*****start/nickame/canal/servidor/porta
             //PRECISA VERIFICAR SE JA TEM UM USUARIO COM AQUELE NOME
             channels.get(ms[2]).addParticipante(ms[1]);
+            //ADICIONA NA LISTA DE IPS O IP + PORTA RELACIONADO AO NICK
+            ips.put(ms[3] + ms[4], ms[1]);
             return "20";
 
         }
@@ -93,10 +98,14 @@ class TCPServer {
 
         } else if (clientSentence.startsWith("/remove")) {
             String ms = clientSentence.substring(9);
-            channels.remove(ms);
-            keysChannels.remove(ms);
-//                        if (ms)
-//                        channels.remove();
+            try {
+                channels.remove(ms);
+                keysChannels.remove(ms);
+                return "20";
+            }
+            catch (Exception e){
+                return "10";
+            }
 
         } else if (clientSentence.startsWith("/list")) {
             String list = "";
@@ -120,13 +129,38 @@ class TCPServer {
                 }
 
         } else if (clientSentence.startsWith("/part")) {
-
+            String ch = clientSentence.substring(7);
+            channels.get(ch);
+             try{
+                 return "20";
+             }
+             catch (Exception e){
+                 return "10";
+             }
 
         } else if (clientSentence.startsWith("/names")) {
+            String ch = clientSentence.substring(8);
+            Channel channel = channels.get(ch);
+            return channel.getParticipantes().toString();
 
         } else if (clientSentence.startsWith("/kick")) {
+            //kick/channel/nickname
+            String[] ms = clientSentence.split("/", 3);
+            try {
+                Channel channel = channels.get(ms[1]);
+                if (channel.getParticipantes().contains(ms[2])){
+                    channel.getParticipantes().remove(ms[2]);
+                    return "20";
+                }
+            }
+            catch (Exception e){
+                return "10";
+            }
+
 
         } else if (clientSentence.startsWith(("msg"))) {
+            //kick/nickname/msg
+            String[] ms = clientSentence.split("/", 3);
 
         } else if (clientSentence.startsWith("/quit")) {
 

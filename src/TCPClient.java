@@ -53,7 +53,7 @@ class TCPClient {
         System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
 
         User user = new User(nick, channel);
-        outToServer.writeBytes("/start/ " + user.getNick() + "/" + user.getChannel() + '\n');
+        outToServer.writeBytes("/start/ " + user.getNick() + "/" + user.getChannel() + "/" + servidor + "/" + porta +'\n');
 
 
 
