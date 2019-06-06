@@ -5,7 +5,7 @@ import java.util.List;
 public class Channel {
     private List<String> participantes;
     private String nome;
-    private String admin;
+    private String admin; //IP + PORTA
 
     public Channel(String nome, String admin){
         this.nome = nome;

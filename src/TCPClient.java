@@ -39,7 +39,6 @@ class TCPClient {
         System.out.println("Digite o seu nick");
         String nick = inFromUser.readLine();
 
-
         System.out.println("Conectando ao servidor " + servidor + ":" + porta);
         clientSocket = new Socket(servidor, porta);
         outToServer = new DataOutputStream(clientSocket.getOutputStream());

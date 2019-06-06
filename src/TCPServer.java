@@ -5,6 +5,7 @@
 
 import Model.Channel;
 import Model.User;
+import org.graalvm.compiler.lir.LIRInstruction;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -20,6 +21,7 @@ class TCPServer {
     private static String clientSentence;
     private static Map<String, Channel> channels;
     private static Map<String , String> ips;
+    private static Map<String, User> usuarios;
     private static List<String> keysChannels;
 
     private static boolean statusServer;
@@ -65,14 +67,14 @@ class TCPServer {
 
     public static String processaMsg(String clientSentence) {
         if (clientSentence.startsWith("/nick")) {
-//                        for (Channel c : channels) {
-//                            User usr = (User) c.getParticipantes();
-//                            //TESTAR
-//                            //VERIFICA SE EXISTE ALGUM NICK IGUAL A PARTIR DA PALAVRA ESCRITA DO INDEX 6
-//                            if (usr.getNick().equalsIgnoreCase(clientSentence.substring(6))) {
-//                                outToClient.writeBytes("10");
-//                            }
-//                        }
+            Set<String> keys = channels.keySet();
+            for (String key: keys ) {
+                if (key != null){
+                    if (channels.get(key).getNome().equalsIgnoreCase(clientSentence.substring(6))){
+                        return "10";
+                    }
+                }
+            }
             return "20";
 
         }
@@ -82,6 +84,8 @@ class TCPServer {
             //*****start/nickame/canal/servidor/porta
             //PRECISA VERIFICAR SE JA TEM UM USUARIO COM AQUELE NOME
             channels.get(ms[2]).addParticipante(ms[1]);
+            //CRIA USUARIO NA LISTA
+            usuarios.put(ms[1], new User(ms[1],ms[2]));
             //ADICIONA NA LISTA DE IPS O IP + PORTA RELACIONADO AO NICK
             ips.put(ms[3] + ms[4], ms[1]);
             return "20";
@@ -89,7 +93,7 @@ class TCPServer {
         }
         else if (clientSentence.startsWith("/create")) {
             String ms = clientSentence.substring(7);
-            Channel channel = new Channel(ms, "connectionSocket.getInetAddress()");
+            Channel channel = new Channel(ms,  );
             channels.put(ms, channel);
             keysChannels.add(ms);
 //                        channels.get(ms).addParticipante();
