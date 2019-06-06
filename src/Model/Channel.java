@@ -5,6 +5,9 @@ import java.util.List;
 public class Channel {
     private List<String> participantes;
     private String nome;
+
+
+
     private String admin; //IP + PORTA
 
     public Channel(String nome, String admin){
@@ -20,11 +23,23 @@ public class Channel {
         participantes.add(user);
     }
 
+    public void removeParticipante(String user){
+        participantes.remove(user);
+    }
+
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 }

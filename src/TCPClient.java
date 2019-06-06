@@ -107,10 +107,13 @@ class TCPClient {
 
         } else if (msgUser.startsWith("/remove")) {
             if (msgServer == "20"){
-                return "Can";
+                return "Canal removido!";
             }
-            else {
-                return "Não foi possível criar o canal.";
+            else if (msgServer == "11"){
+                return "Você não possui permissão para remover um canal.";
+            }
+            else if (msgServer == "10"){
+                return "Não foi possível remover o canal.";
             }
 
         } else if (msgUser.startsWith("/list")) {
@@ -126,18 +129,33 @@ class TCPClient {
             }
 
         } else if (msgUser.startsWith("/part")) {
-
+            if (msgServer == "20"){
+                return "Saiu do canal";
+            }
+            else {
+                return "Não foi possível sair do canal.";
+            }
         } else if (msgUser.startsWith("/names")) {
+            return msgServer;
 
         } else if (msgUser.startsWith("/kick")) {
+            if (msgServer == "20"){
+                return "O usuário foi kickado";
+            }
+            else {
+                return "Não foi possível retirar o usuário.";
+            }
 
-        } else if (msgUser.startsWith(("msg"))) {
-
+        } else if (msgUser.startsWith(("/msg"))) {
+            if (msgServer == "20"){
+                return "Mensagem enviada";
+            }
+            else {
+                return "Não foi possível enviar a mensagem.";
+            }
         } else if (msgUser.startsWith("/quit")) {
-
-//                clientSocket.close();
+    //        clientSocket.close();
         }
-
 
         return "k";
     }
