@@ -38,18 +38,19 @@ class TCPServer {
         ips = new HashMap<>();
 
         channels = new HashMap<>();
+        keysChannels = new ArrayList<>();
 
         Channel ch = new Channel ("lol", "kk");
         Channel ch2 = new Channel ("brizadero", "kk");
-        channels.put("KK", ch);
-        channels.put("briz", ch2);
+        channels.put("lol", ch);
+        channels.put("brizadero", ch2);
 
         System.out.println("ponto1");
 
 
         while (true) {
             try {
-                Socket connectionSocket = welcomeSocket.accept();
+                connectionSocket = welcomeSocket.accept();
                 System.out.println("ponto2");
                 BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
                 outToClient = new DataOutputStream(connectionSocket.getOutputStream());
@@ -75,8 +76,10 @@ class TCPServer {
                     if (channels.get(key).getNome().equalsIgnoreCase(clientSentence.substring(6))) {
                         return "10";
                     }
+
                 }
             }
+            ips.put(IPAdress.toString() + connectionSocket.getPort(), clientSentence.substring(6));
             return "20";
 
         } else if (clientSentence.startsWith("/start")) {
@@ -129,12 +132,13 @@ class TCPServer {
             Set<String> keys = channels.keySet();
             for (String key : keys) {
                 if (key != null) {
-                    list += channels.get(key).getNome() + "\n";
+                    list += channels.get(key).getNome() + " , ";
                 }
             }
             return list;
 
         } else if (clientSentence.startsWith("/join")) {
+
             String ch = clientSentence.substring(6);
             if (channels.containsKey(ch)) {
                 try {
@@ -146,6 +150,7 @@ class TCPServer {
             } else {
                 return "10";
             }
+
 
         } else if (clientSentence.startsWith("/part")) {
             String ch = clientSentence.substring(6);
@@ -196,12 +201,9 @@ class TCPServer {
                         channels.get(key).removeParticipante(ips.get(IPAdress.toString() + connectionSocket.getPort()));
                     }
                 }
-
-
             }
 
         }
         return "";
     }
-
 }

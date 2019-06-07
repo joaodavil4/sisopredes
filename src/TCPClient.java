@@ -32,24 +32,34 @@ class TCPClient {
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 
 
+        String msgServidor = "";
 
         int porta = 6789;
         String servidor = "localhost";
-
-        System.out.println("Digite o seu nick");
-        String nick = inFromUser.readLine();
+        String nick = "";
 
         System.out.println("Conectando ao servidor " + servidor + ":" + porta);
-        clientSocket = new Socket(servidor, porta);
-        outToServer = new DataOutputStream(clientSocket.getOutputStream());
-        inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        do {
+            clientSocket = new Socket(servidor, porta);
+            outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            System.out.println("Digite o seu nick");
+            nick = inFromUser.readLine();
+            sentence = "/nick " + nick;
+            outToServer.writeBytes(sentence + '\n');
+            msgServidor = inFromServer.readLine();
+            System.out.println(processaMsgServer(sentence, msgServidor));
+        }while (msgServidor == "20");
+
+
         sentence = "/list";
-        System.out.println("Escolha um canal acima ^");
         outToServer.writeBytes(sentence + '\n');
-        System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
+        System.out.println(processaMsgServer(sentence, inFromServer.readLine()));
+        System.out.println("Escolha um canal acima ^");
         String channel = inFromUser.readLine();
-        outToServer.writeBytes("/join " + sentence + '\n');
-        System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
+        outToServer.writeBytes("/join " + channel + '\n');
+       // System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
 
         User user = new User(nick, channel);
         outToServer.writeBytes("/start/ " + user.getNick() + "/" + user.getChannel() + "/" + servidor + "/" + porta +'\n');
@@ -89,8 +99,8 @@ class TCPClient {
         }
         else if (msgUser.startsWith("/nick")) {
             //AJEITAR CONFORME A THREAD
-            if (msgServer == "20") {
-                usr.setNick("");
+            if (msgServer.equals("20")) {
+            //    usr.setNick("");
                 return "Nickname alterado!";
             }
             else {
@@ -98,7 +108,7 @@ class TCPClient {
             }
 
         } else if (msgUser.startsWith("/create")) {
-            if (msgServer == "20"){
+            if (msgServer.equals("20")){
                 return "Canal criado";
             }
             else {
