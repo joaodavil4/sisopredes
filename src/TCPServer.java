@@ -26,6 +26,7 @@ class TCPServer {
     private static List<String> keysChannels;
 
     private static boolean statusServer;
+    private static String stringToSend;
 
     TCPServer() {
     }
@@ -67,6 +68,28 @@ class TCPServer {
         }
 
     }
+
+    private static Runnable threadReadFrom = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+
+        public void run(String channel) {
+            try{
+                    for (Socket socket: channels.get(channel).getConexoes()  ) {
+                        outToClient = new DataOutputStream(socket.getOutputStream());
+                        outToClient.writeBytes("O canal não está mais disponível" + '\n');
+                    }
+                } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+
+        }
+
+
+    };
 
     public static String getUniqueClient(){
         return IPAdress.toString();
@@ -117,11 +140,9 @@ class TCPServer {
                 } else {
                     channels.remove(ms);
                     keysChannels.remove(ms);
-                    Set<String> keys = channels.keySet();
-                    for (String key : keys) {
-                        //FALTA MANDAR MSG PRA TODOS OS QUE ESTAO NO CANAL
 
-                    }
+                    //INICIA THREAD PRA MANDAR PRA TODOS
+
                     return "20";
                 }
             } catch (Exception e) {

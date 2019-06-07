@@ -1,10 +1,12 @@
 package Model;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Channel {
     private List<String> participantes;
+    private List<Socket> connectionClient;
     private String nome;
 
 
@@ -15,6 +17,7 @@ public class Channel {
         participantes = new ArrayList<>();
         this.nome = nome;
         this.admin = admin;
+        connectionClient = new ArrayList<>();
     }
 
     public List<String> getParticipantes(){
@@ -23,6 +26,14 @@ public class Channel {
 
     public void addParticipante(String user){
         participantes.add(user);
+    }
+
+    public List<Socket> getConexoes(){
+        return connectionClient;
+    }
+
+    public void addConexoes (Socket socket){
+        connectionClient.add(socket);
     }
 
     public void removeParticipante(String user){
