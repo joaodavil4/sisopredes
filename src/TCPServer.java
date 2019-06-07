@@ -126,6 +126,7 @@ class TCPServer {
                 channels.put(ms, channel);
                 keysChannels.add(ms);
                 channels.get(ms).addParticipante(ips.get(getUniqueClient()));
+
                 return "20";
             } catch (Exception e) {
                 return "10";
@@ -194,12 +195,12 @@ class TCPServer {
             try {
                 //kick/channel/nickname
                 String[] ms = clientSentence.split("/", 4);
-                if (!channels.get(ms[1]).getAdmin().equals(getUniqueClient())) {
+                if (!channels.get(ms[2]).getAdmin().equals(getUniqueClient())) {
                     return "11";
                 } else {
-                    Channel channel = channels.get(ms[1]);
-                    if (channel.getParticipantes().contains(ms[2])) {
-                        channels.get(ms[1]).removeParticipante(ips.get(getUniqueClient()));
+                    Channel channel = channels.get(ms[2]);
+                    if (channel.getParticipantes().contains(ms[3])) {
+                        channels.get(ms[2]).removeParticipante(ips.get(getUniqueClient()));
                         return "20";
                     }
                     return "10";
