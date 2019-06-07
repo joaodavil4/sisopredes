@@ -16,6 +16,7 @@ class TCPClient {
     private static BufferedReader inFromServer;
     private static Boolean statusClient;
     private static Socket clientSocket;
+    private static String channel;
     private static DataOutputStream outToServer;
     private static User usr;
 
@@ -29,7 +30,7 @@ class TCPClient {
         Socket clientSocket;
         String sentenceFromServer;
 
-        User user = new User();
+        usr = new User();
 
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 
@@ -59,13 +60,13 @@ class TCPClient {
         System.out.println(processaMsgServer(sentence, inFromServer.readLine()));
         System.out.println("Escolha um canal acima ^");
         conectaServer(servidor, porta);
-        String channel = inFromUser.readLine();
+        channel = inFromUser.readLine();
         sentence = "/join " + channel;
         outToServer.writeBytes(sentence + '\n');
         System.out.println(processaMsgServer(sentence, inFromServer.readLine()));
 
         conectaServer(servidor, porta);
-        outToServer.writeBytes("/start/ " + user.getNick() + "/" + user.getChannel() + "/" + servidor + "/" + porta +'\n');
+        outToServer.writeBytes("/start/ " + usr.getNick() + "/" + usr.getChannel() + "/" + servidor + "/" + porta +'\n');
 
 
 
@@ -75,7 +76,12 @@ class TCPClient {
             inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             System.out.println("Digite a mensagem...");
             sentence = inFromUser.readLine();
-            outToServer.writeBytes(sentence + '\n');
+                if(!sentence.startsWith("/names")){
+                    outToServer.writeBytes(sentence + '\n');
+                }
+                else {
+                    outToServer.writeBytes(sentence + usr.getChannel() + '\n');
+                }
             sentenceFromServer = inFromServer.readLine();
             System.out.println("Recebido do servidor: " + processaMsgServer(sentence, sentenceFromServer));
         }
@@ -105,6 +111,7 @@ class TCPClient {
         //COMANDO INICIAL PARA SETAR O USUARIO NO SERVER
         else if (msgUser.startsWith("/start")){
             if (msgServer.equals("20")){
+                usr.setChannel(channel);
                 return "Conectado ao canal!";
             }
             else {
@@ -147,6 +154,7 @@ class TCPClient {
 
         } else if (msgUser.startsWith("/join")) {
             if (msgServer.equals("20")){
+                usr.setChannel(channel);
                 return "Entrou no canal";
             }
             else {

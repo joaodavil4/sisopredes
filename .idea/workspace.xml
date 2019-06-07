@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a271f9e-bf08-4e5f-aa15-b205db69f07a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TCPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPServer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -19,8 +21,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TCPClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-340">
-              <caret line="66" column="39" lean-forward="true" selection-start-line="66" selection-start-column="39" selection-end-line="66" selection-end-column="39" />
+            <state relative-caret-position="510">
+              <caret line="82" column="57" selection-start-line="82" selection-start-column="57" selection-end-line="82" selection-end-column="57" />
             </state>
           </provider>
         </entry>
@@ -37,12 +39,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="238" column="33" lean-forward="true" selection-start-line="238" selection-start-column="33" selection-end-line="238" selection-end-column="33" />
+            <state relative-caret-position="340">
+              <caret line="207" selection-start-line="207" selection-end-line="207" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2609#2610#0" expanded="true" />
-                <element signature="e#2651#2652#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -51,12 +51,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/Channel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
+            <state relative-caret-position="477">
               <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#752#753#0" expanded="true" />
-                <element signature="e#797#798#0" expanded="true" />
+                <element signature="e#796#797#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -78,16 +78,16 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/Model/User.java" />
-        <option value="$PROJECT_DIR$/src/TCPClient.java" />
         <option value="$PROJECT_DIR$/src/Model/Channel.java" />
+        <option value="$PROJECT_DIR$/src/TCPClient.java" />
         <option value="$PROJECT_DIR$/src/TCPServer.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="952" />
-    <option name="width" value="977" />
-    <option name="height" value="1038" />
+    <option name="x" value="951" />
+    <option name="width" value="978" />
+    <option name="height" value="1039" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -200,11 +200,11 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.37057993" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.42574257" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.42574257" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32673267" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32673267" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32974428" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.31400284" />
@@ -235,21 +235,62 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/TCPClient.java</url>
-          <line>147</line>
+          <line>154</line>
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/TCPClient.java</url>
-          <line>63</line>
+          <line>64</line>
           <properties />
           <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/TCPServer.java</url>
+          <line>187</line>
+          <properties />
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>clientSentence.split(&quot;/&quot;, 3)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ms</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>ms[1]</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>channels.get(ms[1])</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>channel.getParticipantes().contains(ms[2])</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>channel.getParticipantes().contains(ms[2]))</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>channels.get(ch).getParticipantes().toString()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>getUniqueClient()</expression-string>
         <language-id>JAVA</language-id>
@@ -260,65 +301,11 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>ips.get(getUniqueClient())</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>channels.get(ch).addParticipante(ips.get(getUniqueClient()))</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>channels.get(ch)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>connectionSocket.getPort()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>ips.get(IPAdress.toString() + connectionSocket.getPort())</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>channels.get(ms)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>msgServer.equals(&quot;20&quot;)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/Documents/Cliente-Server-TCP/TCPServer/src/tcpserver/kk.java" />
     <entry file="file://$USER_HOME$/Documents/Cliente-Server-TCP/TCPClient/src/tcpclient/jj.java" />
-    <entry file="file://$PROJECT_DIR$/src/Model/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Channel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#752#753#0" expanded="true" />
-            <element signature="e#797#798#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-12.0.1/lib/src.zip!/java.base/java/lang/Runnable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="319">
@@ -326,21 +313,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Channel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="477">
+          <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#752#753#0" expanded="true" />
+            <element signature="e#796#797#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/TCPClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-340">
-          <caret line="66" column="39" lean-forward="true" selection-start-line="66" selection-start-column="39" selection-end-line="66" selection-end-column="39" />
+        <state relative-caret-position="510">
+          <caret line="82" column="57" selection-start-line="82" selection-start-column="57" selection-end-line="82" selection-end-column="57" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="238" column="33" lean-forward="true" selection-start-line="238" selection-start-column="33" selection-end-line="238" selection-end-column="33" />
+        <state relative-caret-position="340">
+          <caret line="207" selection-start-line="207" selection-end-line="207" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2609#2610#0" expanded="true" />
-            <element signature="e#2651#2652#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -186,14 +186,14 @@ class TCPServer {
             }
 
         } else if (clientSentence.startsWith("/names")) {
-            String ch = clientSentence.substring(7);
+            String ch = clientSentence.substring(6);
             return channels.get(ch).getParticipantes().toString();
 
         } else if (clientSentence.startsWith("/kick")) {
             //ADMIN PERMISSION
             try {
                 //kick/channel/nickname
-                String[] ms = clientSentence.split("/", 3);
+                String[] ms = clientSentence.split("/", 4);
                 if (!channels.get(ms[1]).getAdmin().equals(getUniqueClient())) {
                     return "11";
                 } else {
