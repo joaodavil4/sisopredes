@@ -11,6 +11,10 @@ public class User {
         this.channel = channel;
     }
 
+    public User (){
+
+    }
+
     public String getNick() {
         return nick;
     }

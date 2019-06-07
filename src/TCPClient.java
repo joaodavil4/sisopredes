@@ -16,6 +16,7 @@ class TCPClient {
     private static BufferedReader inFromServer;
     private static Boolean statusClient;
     private static Socket clientSocket;
+    private static DataOutputStream outToServer;
     private static User usr;
 
 
@@ -27,7 +28,8 @@ class TCPClient {
         String sentence;
         Socket clientSocket;
         String sentenceFromServer;
-        DataOutputStream outToServer;
+
+        User user = new User();
 
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 
@@ -41,9 +43,7 @@ class TCPClient {
         System.out.println("Conectando ao servidor " + servidor + ":" + porta);
 
         do {
-            clientSocket = new Socket(servidor, porta);
-            outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            conectaServer(servidor, porta);
             System.out.println("Digite o seu nick");
             nick = inFromUser.readLine();
             sentence = "/nick " + nick;
@@ -53,15 +53,18 @@ class TCPClient {
         }while (msgServidor == "20");
 
 
+        conectaServer(servidor, porta);
         sentence = "/list";
         outToServer.writeBytes(sentence + '\n');
         System.out.println(processaMsgServer(sentence, inFromServer.readLine()));
         System.out.println("Escolha um canal acima ^");
+        conectaServer(servidor, porta);
         String channel = inFromUser.readLine();
-        outToServer.writeBytes("/join " + channel + '\n');
-       // System.out.println("Recebido do servidor: " + processaMsgServer(sentence, inFromServer.readLine()));
+        sentence = "/join " + channel;
+        outToServer.writeBytes(sentence + '\n');
+        System.out.println(processaMsgServer(sentence, inFromServer.readLine()));
 
-        User user = new User(nick, channel);
+        conectaServer(servidor, porta);
         outToServer.writeBytes("/start/ " + user.getNick() + "/" + user.getChannel() + "/" + servidor + "/" + porta +'\n');
 
 
@@ -70,13 +73,25 @@ class TCPClient {
             clientSocket = new Socket(servidor, porta);
             outToServer = new DataOutputStream(clientSocket.getOutputStream());
             inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            System.out.println("Digite string a ser enviada para o servidor");
+            System.out.println("Digite a mensagem...");
             sentence = inFromUser.readLine();
             outToServer.writeBytes(sentence + '\n');
             sentenceFromServer = inFromServer.readLine();
             System.out.println("Recebido do servidor: " + processaMsgServer(sentence, sentenceFromServer));
         }
 //        clientSocket.close();
+    }
+
+    public static void conectaServer(String server, int port){
+
+        try {
+            clientSocket = new Socket(server, port);
+            outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static String processaMsgServer(String msgUser, String msgServer){
@@ -89,7 +104,7 @@ class TCPClient {
         }
         //COMANDO INICIAL PARA SETAR O USUARIO NO SERVER
         else if (msgUser.startsWith("/start")){
-            if (msgServer == "20") {
+            if (msgServer.equals("20")){
                 return "Conectado ao canal!";
             }
             else {
@@ -99,12 +114,12 @@ class TCPClient {
         }
         else if (msgUser.startsWith("/nick")) {
             //AJEITAR CONFORME A THREAD
-            if (msgServer.equals("20")) {
-            //    usr.setNick("");
-                return "Nickname alterado!";
+            if (msgServer.equals("10")) {
+                return "Nickname já existente";
             }
             else {
-                return "Nickname já existente";
+//                usr.setNick(msgServer);
+                return "Nickname alterado!";
             }
 
         } else if (msgUser.startsWith("/create")) {
@@ -116,13 +131,13 @@ class TCPClient {
             }
 
         } else if (msgUser.startsWith("/remove")) {
-            if (msgServer == "20"){
+            if (msgServer.equals("20")){
                 return "Canal removido!";
             }
-            else if (msgServer == "11"){
+            else if (msgServer.equals("11")){
                 return "Você não possui permissão para remover um canal.";
             }
-            else if (msgServer == "10"){
+            else if (msgServer.equals("10")){
                 return "Não foi possível remover o canal.";
             }
 
@@ -131,7 +146,7 @@ class TCPClient {
 
 
         } else if (msgUser.startsWith("/join")) {
-            if (msgServer == "20"){
+            if (msgServer.equals("20")){
                 return "Entrou no canal";
             }
             else {
@@ -139,7 +154,7 @@ class TCPClient {
             }
 
         } else if (msgUser.startsWith("/part")) {
-            if (msgServer == "20"){
+            if (msgServer.equals("20")){
                 return "Saiu do canal";
             }
             else {
@@ -149,7 +164,7 @@ class TCPClient {
             return msgServer;
 
         } else if (msgUser.startsWith("/kick")) {
-            if (msgServer == "20"){
+            if (msgServer.equals("20")){
                 return "O usuário foi kickado";
             }
             else {
@@ -157,7 +172,7 @@ class TCPClient {
             }
 
         } else if (msgUser.startsWith(("/msg"))) {
-            if (msgServer == "20"){
+            if (msgServer.equals("20")){
                 return "Mensagem enviada";
             }
             else {

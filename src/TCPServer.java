@@ -68,6 +68,10 @@ class TCPServer {
 
     }
 
+    public static String getUniqueClient(){
+        return IPAdress.toString();
+    }
+
     public static String processaMsg(String clientSentence) {
         if (clientSentence.startsWith("/nick")) {
             Set<String> keys = channels.keySet();
@@ -79,8 +83,8 @@ class TCPServer {
 
                 }
             }
-            ips.put(IPAdress.toString() + connectionSocket.getPort(), clientSentence.substring(6));
-            return "20";
+            ips.put(getUniqueClient(), clientSentence.substring(6));
+            return clientSentence.substring(6);
 
         } else if (clientSentence.startsWith("/start")) {
             String[] ms = clientSentence.split("/", 5);
@@ -90,18 +94,15 @@ class TCPServer {
             channels.get(ms[2]).addParticipante(ms[1]);
             //CRIA USUARIO NA LISTA
             usuarios.put(ms[1], new User(IPAdress.toString(), ms[2]));
-            //ADICIONA NA LISTA DE IPS O IP + PORTA RELACIONADO AO NICK
-            //SO O IP POR ENQNT
-            ips.put(IPAdress.toString() + connectionSocket.getPort(), ms[1]);
             return "20";
 
         } else if (clientSentence.startsWith("/create")) {
             try {
-                String ms = clientSentence.substring(7);
-                Channel channel = new Channel(ms, "");
+                String ms = clientSentence.substring(8);
+                Channel channel = new Channel(ms, getUniqueClient());
                 channels.put(ms, channel);
                 keysChannels.add(ms);
-                channels.get(ms).addParticipante(ips.get(IPAdress.toString() + connectionSocket.getPort()));
+                channels.get(ms).addParticipante(ips.get(getUniqueClient()));
                 return "20";
             } catch (Exception e) {
                 return "10";
@@ -109,9 +110,9 @@ class TCPServer {
 
         } else if (clientSentence.startsWith("/remove")) {
             //ADMIN PERMISSION
-            String ms = clientSentence.substring(9);
+            String ms = clientSentence.substring(8);
             try {
-                if (channels.get(ms).getAdmin() != IPAdress.toString() + connectionSocket.getPort()) {
+                if (!channels.get(ms).getAdmin().equals(getUniqueClient())) {
                     return "11";
                 } else {
                     channels.remove(ms);
@@ -142,7 +143,7 @@ class TCPServer {
             String ch = clientSentence.substring(6);
             if (channels.containsKey(ch)) {
                 try {
-                    channels.get(ch).addParticipante(ips.get(IPAdress.toString() + connectionSocket.getPort()));
+                    channels.get(ch).addParticipante(ips.get(getUniqueClient()));
                     return "20";
                 } catch (Exception e) {
                     return "10";
@@ -156,7 +157,7 @@ class TCPServer {
             String ch = clientSentence.substring(6);
 
             try {
-                channels.get(ch).removeParticipante(ips.get(IPAdress.toString() + connectionSocket.getPort()));
+                channels.get(ch).removeParticipante(ips.get(getUniqueClient()));
                 return "20";
             } catch (Exception e) {
                 return "10";
@@ -167,15 +168,16 @@ class TCPServer {
             return channels.get(ch).getParticipantes().toString();
 
         } else if (clientSentence.startsWith("/kick")) {
+            //ADMIN PERMISSION
             try {
                 //kick/channel/nickname
                 String[] ms = clientSentence.split("/", 3);
-                if (channels.get(ms[1]).getAdmin() != IPAdress.toString() + connectionSocket.getPort()) {
+                if (!channels.get(ms[1]).getAdmin().equals(getUniqueClient())) {
                     return "11";
                 } else {
                     Channel channel = channels.get(ms[1]);
                     if (channel.getParticipantes().contains(ms[2])) {
-                        channels.get(ms[1]).removeParticipante(ips.get(IPAdress.toString() + connectionSocket.getPort()));
+                        channels.get(ms[1]).removeParticipante(ips.get(getUniqueClient()));
                         return "20";
                     }
                     return "10";
@@ -197,8 +199,8 @@ class TCPServer {
             Set<String> keys = channels.keySet();
             for (String key : keys) {
                 if (key != null) {
-                    if (channels.get(key).getNome() == ips.get(IPAdress.toString() + connectionSocket.getPort())) {
-                        channels.get(key).removeParticipante(ips.get(IPAdress.toString() + connectionSocket.getPort()));
+                    if (channels.get(key).getNome() == ips.get(getUniqueClient())) {
+                        channels.get(key).removeParticipante(ips.get(getUniqueClient()));
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Channel {
@@ -11,6 +12,7 @@ public class Channel {
     private String admin; //IP + PORTA
 
     public Channel(String nome, String admin){
+        participantes = new ArrayList<>();
         this.nome = nome;
         this.admin = admin;
     }
