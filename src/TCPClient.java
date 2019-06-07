@@ -17,6 +17,7 @@ class TCPClient {
     private static Boolean statusClient;
     private static Socket clientSocket;
     private static String channel;
+    private static String nick;
     private static DataOutputStream outToServer;
     private static User usr;
 
@@ -39,7 +40,6 @@ class TCPClient {
 
         int porta = 6789;
         String servidor = "localhost";
-        String nick = "";
 
         System.out.println("Conectando ao servidor " + servidor + ":" + porta);
 
@@ -66,7 +66,7 @@ class TCPClient {
         System.out.println(processaMsgServer(sentence, inFromServer.readLine()));
 
         conectaServer(servidor, porta);
-        outToServer.writeBytes("/start/ " + usr.getNick() + "/" + usr.getChannel() + "/" + servidor + "/" + porta +'\n');
+        outToServer.writeBytes("/start/" + usr.getNick() + "/" + usr.getChannel() + "/" + servidor + "/" + porta +'\n');
 
 
 
@@ -125,16 +125,17 @@ class TCPClient {
                 return "Nickname já existente";
             }
             else {
-//                usr.setNick(msgServer);
+                usr.setNick(nick);
                 return "Nickname alterado!";
             }
 
         } else if (msgUser.startsWith("/create")) {
-            if (msgServer.equals("20")){
-                return "Canal criado";
+            if (msgServer.equals("10")){
+                return "Não foi possível criar o canal.";
             }
             else {
-                return "Não foi possível criar o canal.";
+                usr.setChannel(channel);
+                return "Canal criado";
             }
 
         } else if (msgUser.startsWith("/remove")) {
@@ -163,13 +164,19 @@ class TCPClient {
 
         } else if (msgUser.startsWith("/part")) {
             if (msgServer.equals("20")){
+                usr.setChannel("");
                 return "Saiu do canal";
             }
             else {
                 return "Não foi possível sair do canal.";
             }
         } else if (msgUser.startsWith("/names")) {
-            return msgServer;
+            if (msgServer.equals("10")){
+                return "Ocorreu um erro";
+            }
+            else {
+                return msgServer;
+            }
 
         } else if (msgUser.startsWith("/kick")) {
             if (msgServer.equals("20")){

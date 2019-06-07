@@ -19,6 +19,9 @@ class TCPServer {
     private static ServerSocket welcomeSocket;
     private static String clientSentence;
     private static InetAddress IPAdress;
+    private static String lastChannelRemoved;
+    private static String lastMsgActive;
+    private static String channelActive;
     private static Map<String, Channel> channels;
     //PASSA IP + PORTA RETORNA O NICK
     private static Map<String , String> ips;
@@ -40,6 +43,7 @@ class TCPServer {
 
         channels = new HashMap<>();
         keysChannels = new ArrayList<>();
+        usuarios = new HashMap<>();
 
         Channel ch = new Channel ("lol", "kk");
         Channel ch2 = new Channel ("brizadero", "kk");
@@ -70,18 +74,32 @@ class TCPServer {
     }
 
     private static Runnable threadReadFrom = new Runnable() {
-        @Override
+
         public void run() {
-
-        }
-
-        public void run(String channel) {
             try{
-                    for (Socket socket: channels.get(channel).getConexoes()  ) {
+                    for (Socket socket: channels.get(lastChannelRemoved).getConexoes()  ) {
                         outToClient = new DataOutputStream(socket.getOutputStream());
                         outToClient.writeBytes("O canal não está mais disponível" + '\n');
                     }
                 } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+
+        }
+
+
+    };
+
+    private static Runnable broadCast = new Runnable() {
+
+        public void run() {
+            try{
+                for (Socket socket: channels.get(channelActive).getConexoes()  ) {
+                    outToClient = new DataOutputStream(socket.getOutputStream());
+                    outToClient.writeBytes(lastMsgActive + '\n');
+                }
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
@@ -96,7 +114,12 @@ class TCPServer {
     }
 
     public static String processaMsg(String clientSentence) {
-        if (clientSentence.startsWith("/nick")) {
+        if (!clientSentence.startsWith("/")){
+            lastMsgActive = clientSentence;
+            broadCast.run();
+
+        }
+        else if (clientSentence.startsWith("/nick")) {
             Set<String> keys = channels.keySet();
             for (String key : keys) {
                 if (key != null) {
@@ -106,17 +129,22 @@ class TCPServer {
 
                 }
             }
-            ips.put(getUniqueClient(), clientSentence.substring(6));
-            return clientSentence.substring(6);
+            if (ips.containsKey(getUniqueClient())){
+                ips.replace(getUniqueClient(), clientSentence.substring(6));
+            }
+            else {
+                ips.put(getUniqueClient(), clientSentence.substring(6));
+            }
+            return "20";
 
         } else if (clientSentence.startsWith("/start")) {
             String[] ms = clientSentence.split("/", 5);
 
             //*****start/nickame/canal/servidor/porta
             //PRECISA VERIFICAR SE JA TEM UM USUARIO COM AQUELE NOME
-            channels.get(ms[2]).addParticipante(ms[1]);
+   //         channels.get(ms[3]).addParticipante(ms[2]);
             //CRIA USUARIO NA LISTA
-            usuarios.put(ms[1], new User(IPAdress.toString(), ms[2]));
+            usuarios.put(ms[2], new User(ms[2], ms[3]));
             return "20";
 
         } else if (clientSentence.startsWith("/create")) {
@@ -126,8 +154,9 @@ class TCPServer {
                 channels.put(ms, channel);
                 keysChannels.add(ms);
                 channels.get(ms).addParticipante(ips.get(getUniqueClient()));
+                channels.get(ms).addConexoes(connectionSocket);
 
-                return "20";
+                return ms;
             } catch (Exception e) {
                 return "10";
             }
@@ -139,6 +168,12 @@ class TCPServer {
                 if (!channels.get(ms).getAdmin().equals(getUniqueClient())) {
                     return "11";
                 } else {
+
+                    lastChannelRemoved = ms;
+
+                    threadReadFrom.s();
+
+
                     channels.remove(ms);
                     keysChannels.remove(ms);
 
@@ -166,7 +201,9 @@ class TCPServer {
             String ch = clientSentence.substring(6);
             if (channels.containsKey(ch)) {
                 try {
+                    channelActive = ch;
                     channels.get(ch).addParticipante(ips.get(getUniqueClient()));
+                    channels.get(ch).addConexoes(connectionSocket);
                     return "20";
                 } catch (Exception e) {
                     return "10";
@@ -187,8 +224,13 @@ class TCPServer {
             }
 
         } else if (clientSentence.startsWith("/names")) {
-            String ch = clientSentence.substring(6);
-            return channels.get(ch).getParticipantes().toString();
+            try {
+                String ch = clientSentence.substring(6);
+                return channels.get(ch).getParticipantes().toString();
+            }
+            catch (Exception e){
+                return "10";
+            }
 
         } else if (clientSentence.startsWith("/kick")) {
             //ADMIN PERMISSION
@@ -213,23 +255,33 @@ class TCPServer {
 
         } else if (clientSentence.startsWith(("/msg"))) {
             //kick/channel/nickname/msg
-            String[] ms = clientSentence.split("/", 3);
-            if (channels.get(ms[1]).getParticipantes().contains(ms[2])) {
-                //MANDAR MSG PRO USUÁRIO
+            try {
+                String[] ms = clientSentence.split("/", 3);
+                if (channels.get(ms[1]).getParticipantes().contains(ms[2])) {
+                    //MANDAR MSG PRO USUÁRIO
+                }
+            }
+            catch (Exception e){
+                return "10";
             }
 
         } else if (clientSentence.startsWith("/quit")) {
-            Set<String> keys = channels.keySet();
-            for (String key : keys) {
-                if (key != null) {
-                    if (channels.get(key).getNome() == ips.get(getUniqueClient())) {
-                        channels.get(key).removeParticipante(ips.get(getUniqueClient()));
+            try {
+                Set<String> keys = channels.keySet();
+                for (String key : keys) {
+                    if (key != null) {
+                        if (channels.get(key).getNome() == ips.get(getUniqueClient())) {
+                            channels.get(key).removeParticipante(ips.get(getUniqueClient()));
+                        }
                     }
                 }
             }
+            catch (Exception e){
+                return "10";
+            }
 
         }
-        return "";
+        return "10";
     }
 }
 /*
