@@ -141,6 +141,7 @@ class TCPServer {
                     channels.remove(ms);
                     keysChannels.remove(ms);
 
+
                     //INICIA THREAD PRA MANDAR PRA TODOS
 
                     return "20";
@@ -230,3 +231,23 @@ class TCPServer {
         return "";
     }
 }
+/*
+class ThreadReadFrom extends Thread {
+    @Override
+    public void run() {
+        try {
+            for (Socket socket : channels.get(channel).getConexoes()) {
+                outToClient = new DataOutputStream(socket.getOutputStream());
+                outToClient.writeBytes("O canal não está mais disponível" + '\n');
+            }
+        } catch (
+                IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+}
+*/
+
+
