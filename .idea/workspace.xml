@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a271f9e-bf08-4e5f-aa15-b205db69f07a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redesisop/TCPServer$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redesisop/TCPServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redesisop/TCPServer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TCPServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TCPServer.java" afterDir="false" />
     </list>
@@ -22,8 +23,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TCPClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-51">
-              <caret line="178" column="13" selection-start-line="178" selection-start-column="13" selection-end-line="178" selection-end-column="13" />
+            <state relative-caret-position="-238">
+              <caret line="84" selection-start-line="84" selection-end-line="84" />
             </state>
           </provider>
         </entry>
@@ -40,8 +41,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="174" selection-start-line="174" selection-end-line="174" />
+            <state relative-caret-position="162">
+              <caret line="261" column="13" lean-forward="true" selection-start-line="261" selection-start-column="13" selection-end-line="261" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -53,7 +54,7 @@
         <entry file="file://$PROJECT_DIR$/src/Model/Channel.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="478">
-              <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+              <caret line="58" selection-start-line="58" selection-end-line="58" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#667#668#0" expanded="true" />
@@ -86,8 +87,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/Model/User.java" />
-        <option value="$PROJECT_DIR$/src/TCPClient.java" />
         <option value="$PROJECT_DIR$/src/Model/Channel.java" />
+        <option value="$PROJECT_DIR$/src/TCPClient.java" />
         <option value="$PROJECT_DIR$/src/TCPServer.java" />
       </list>
     </option>
@@ -237,51 +238,38 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/TCPServer.java</url>
-          <line>167</line>
-          <properties />
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TCPClient.java</url>
-          <line>155</line>
-          <properties />
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TCPClient.java</url>
-          <line>64</line>
-          <properties />
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/TCPServer.java</url>
-          <line>225</line>
+          <line>257</line>
           <properties />
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/TCPServer.java</url>
-          <line>144</line>
+          <line>173</line>
           <properties />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/TCPClient.java</url>
-          <line>49</line>
+          <line>84</line>
           <properties />
-          <option name="timeStamp" value="29" />
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/TCPServer.java</url>
-          <line>118</line>
+          <line>139</line>
           <properties />
-          <option name="timeStamp" value="32" />
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>channels</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>threadReadFrom.wait()</expression-string>
         <language-id>JAVA</language-id>
@@ -322,11 +310,6 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>clientSentence.split(&quot;/&quot;, 5)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
@@ -336,7 +319,7 @@
     <entry file="file://$PROJECT_DIR$/src/Model/Channel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="478">
-          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#667#668#0" expanded="true" />
@@ -356,15 +339,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TCPClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="178" column="13" selection-start-line="178" selection-start-column="13" selection-end-line="178" selection-end-column="13" />
+        <state relative-caret-position="-238">
+          <caret line="84" selection-start-line="84" selection-end-line="84" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TCPServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="174" selection-start-line="174" selection-end-line="174" />
+        <state relative-caret-position="162">
+          <caret line="261" column="13" lean-forward="true" selection-start-line="261" selection-start-column="13" selection-end-line="261" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

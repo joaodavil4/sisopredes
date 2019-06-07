@@ -73,7 +73,15 @@ class TCPServer {
 
     }
 
-    private static Runnable threadReadFrom = new Runnable() {
+    static class ReadFrom implements Runnable {
+
+        Thread t;
+
+        public ReadFrom(){
+            t = new Thread(ReadFrom.this);
+            t.run();
+            t.start();
+        }
 
         public void run() {
             try{
@@ -89,9 +97,17 @@ class TCPServer {
         }
 
 
-    };
+    }
 
-    private static Runnable broadCast = new Runnable() {
+    static class BroadCast implements Runnable{
+
+        Thread t;
+
+        public BroadCast(){
+            t = new Thread(BroadCast.this);
+            t.run();
+            t.start();
+        }
 
         public void run() {
             try{
@@ -107,7 +123,7 @@ class TCPServer {
         }
 
 
-    };
+    }
 
     public static String getUniqueClient(){
         return IPAdress.toString();
@@ -116,7 +132,20 @@ class TCPServer {
     public static String processaMsg(String clientSentence) {
         if (!clientSentence.startsWith("/")){
             lastMsgActive = clientSentence;
-            broadCast.run();
+
+
+            try {
+                BroadCast broadCast = new BroadCast();
+                broadCast.t.join();
+                outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+                outToClient.writeBytes(lastMsgActive + '\n');
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
         else if (clientSentence.startsWith("/nick")) {
@@ -171,11 +200,14 @@ class TCPServer {
 
                     lastChannelRemoved = ms;
 
-                    threadReadFrom.s();
+                    ReadFrom readFrom = new ReadFrom();
+                    readFrom.t.join();
 
 
                     channels.remove(ms);
                     keysChannels.remove(ms);
+
+                    outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 
 
                     //INICIA THREAD PRA MANDAR PRA TODOS

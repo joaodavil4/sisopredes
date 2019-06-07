@@ -104,9 +104,15 @@ class TCPClient {
 
 
         if (!msgUser.startsWith("/")) {
-//            outToServer.writeBytes("<" + usr.getNick() + "> " + msg + '\n');
-//            String echo = inFromServer.readLine();
-//            System.out.println("FROM SERVER: " + echo);
+//            try {
+//                outToServer.writeBytes("<" + usr.getNick() + "> " + msgUser + '\n');
+//                String echo = inFromServer.readLine();
+//                return "20";
+//            }
+//            catch (Exception e){
+//                return "10";
+//            }
+
         }
         //COMANDO INICIAL PARA SETAR O USUARIO NO SERVER
         else if (msgUser.startsWith("/start")){
@@ -197,7 +203,7 @@ class TCPClient {
     //        clientSocket.close();
         }
 
-        return "k";
+        return msgServer;
     }
 
 
